@@ -4,17 +4,22 @@ import { compose } from 'redux';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
 import classNames from 'classnames';
 import moment from 'moment';
+import { formatMoney } from '../../util/currency';
+import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { required, bookingDatesRequired, composeValidators } from '../../util/validators';
 import { START_DATE, END_DATE } from '../../util/dates';
 import { propTypes } from '../../util/types';
-import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput } from '../../components';
+import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput, FieldCheckbox } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 
-import css from './BookingDatesForm.module.css';
 
+import css from './BookingDatesForm.module.css';
+const { Money } = sdkTypes;
 const identity = v => v;
+
+
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
@@ -111,8 +116,30 @@ export class BookingDatesFormComponent extends Component {
             lineItems,
             fetchLineItemsInProgress,
             fetchLineItemsError,
+            cleaningFee,
           } = fieldRenderProps;
           const { startDate, endDate } = values && values.bookingDates ? values.bookingDates : {};
+
+          const formattedCleaningFee = cleaningFee
+            ? formatMoney(
+              intl,
+              new Money(cleaningFee.amount, cleaningFee.currency)
+            )
+            : null;
+
+          const cleaningFeeLabel = intl.formatMessage(
+            { id: 'BookingDatesForm.cleaningFeeLabel' },
+            { fee: formattedCleaningFee }
+          );
+
+          const cleaningFeeMaybe = cleaningFee ? (
+            <FieldCheckbox
+              id="cleaningFee"
+              name="cleaningFee"
+              label={cleaningFeeLabel}
+              value="cleaningFee"
+            />
+          ) : null;
 
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingDatesForm.bookingStartTitle',
@@ -143,10 +170,10 @@ export class BookingDatesFormComponent extends Component {
           const bookingData =
             startDate && endDate
               ? {
-                  unitType,
-                  startDate,
-                  endDate,
-                }
+                unitType,
+                startDate,
+                endDate,
+              }
               : null;
 
           const showEstimatedBreakdown =
@@ -221,7 +248,7 @@ export class BookingDatesFormComponent extends Component {
                 )}
                 disabled={fetchLineItemsInProgress}
               />
-
+              {cleaningFeeMaybe}
               {bookingInfoMaybe}
               {loadingSpinnerMaybe}
               {bookingInfoErrorMaybe}
