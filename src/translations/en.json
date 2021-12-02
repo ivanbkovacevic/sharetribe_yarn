@@ -222,6 +222,8 @@
   "EditListingPoliciesPanel.createListingTitle": "Time to set some ground rules for the bathers.",
   "EditListingPoliciesPanel.title": "Edit the rules of {listingTitle}",
   "EditListingPricingForm.priceInputPlaceholder": "Choose your price…",
+  "EditListingPricingForm.cleaningFeeMessage": "Cleaning fee in euros",
+  "EditListingPricingForm.cleaningFeePlaceholderMessage": "Choose cleaning fee..",
   "EditListingPricingForm.pricePerDay": "Price per day in euros",
   "EditListingPricingForm.pricePerNight": "Price per night in euros",
   "EditListingPricingForm.pricePerUnit": "Price per unit in euros",
