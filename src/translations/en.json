@@ -362,6 +362,7 @@
   "ListingCard.unsupportedPrice": "({currency})",
   "ListingCard.unsupportedPriceTitle": "Unsupported currency ({currency})",
   "ListingPage.bookingSubTitle": "Start by choosing your dates.",
+  "ListingPage.viewType": "Cottage with {view}",
   "ListingPage.bookingTitle": "Book {title}",
   "ListingPage.closedListing": "This listing has been closed and can't be booked.",
   "ListingPage.contactUser": "Contact",
