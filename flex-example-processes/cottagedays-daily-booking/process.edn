@@ -41,6 +41,8 @@
    :actor :actor.role/provider,
    :actions
    [{:name :action/accept-booking}
+   {:name :action/reveal-provider-protected-data,
+    :config {:key-mapping {:phoneNumber :providerPhoneNumber}}}
     {:name :action/stripe-capture-payment-intent}],
    :from :state/preauthorized,
    :to :state/accepted}
@@ -79,7 +81,7 @@
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
    :to :state/cancelled}
-   {:name :transition/decline-preauthorized-by-operator,
+  {:name :transition/decline-preauthorized-by-operator,
    :actor :actor.role/operator,
    :actions
    [{:name :action/decline-booking}

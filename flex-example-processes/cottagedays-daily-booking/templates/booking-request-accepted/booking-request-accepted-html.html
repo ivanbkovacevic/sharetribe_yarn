@@ -39,6 +39,8 @@
     {{#with transaction}}
     <p>{{provider.display-name}} has accepted your booking request for {{listing.title}} from {{> format-date date=booking.start}} to {{> format-date date=booking.end}}.</p>
 
+    <p>In case you need to contact {{provider.display-name}} directly, you can use the following phone number: {{protected-data.providerPhoneNumber}}</p>
+    
     <p>We have charged {{> format-money money=payin-total}} from your credit card. Here's your receipt.</p>
 
     <table>
