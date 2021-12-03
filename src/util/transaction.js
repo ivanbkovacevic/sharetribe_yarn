@@ -227,8 +227,6 @@ const transitionsToDeclined = [
   ...getTransitionsToState(STATE_DECLINED),
   ...getTransitionsToState(STATE_DECLINED_BY_OPERATOR),
 ];
-export const txIsDeclined = tx =>
-  transitionsToDeclined.includes(txLastTransition(tx));
 
 const txLastTransition = tx => ensureTransaction(tx).attributes.lastTransition;
 
