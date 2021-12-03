@@ -60,12 +60,14 @@ export class BookingDatesFormComponent extends Component {
   handleOnChange(formValues) {
     const { startDate, endDate } =
       formValues.values && formValues.values.bookingDates ? formValues.values.bookingDates : {};
+      const hasCleaningFee =
+      formValues.values.cleaningFee && formValues.values.cleaningFee.length > 0;
     const listingId = this.props.listingId;
     const isOwnListing = this.props.isOwnListing;
 
     if (startDate && endDate && !this.props.fetchLineItemsInProgress) {
       this.props.onFetchTransactionLineItems({
-        bookingData: { startDate, endDate },
+        bookingData: { startDate, endDate, hasCleaningFee },
         listingId,
         isOwnListing,
       });

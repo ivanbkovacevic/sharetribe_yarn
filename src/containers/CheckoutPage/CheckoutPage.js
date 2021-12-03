@@ -197,6 +197,7 @@ export class CheckoutPageComponent extends Component {
           listingId,
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
+          hasCleaningFee: bookingData.cleaningFee?.length > 0,
         },
         transactionId
       );
@@ -380,6 +381,7 @@ export class CheckoutPageComponent extends Component {
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
       ...optionalPaymentParams,
+      hasCleaningFee: pageData.bookingData?.cleaningFee?.length > 0,
     };
 
     return handlePaymentIntentCreation(orderParams);
