@@ -39,6 +39,9 @@ import MenuIcon from './MenuIcon';
 import Overlay from './Overlay';
 import css from './ManageListingCard.module.css';
 
+import * as codeFacto from '../../codefacto'
+import Button from '../Button/Button'
+
 // Menu content needs the same padding
 const MENU_CONTENT_OFFSET = -12;
 const MAX_LENGTH_FOR_WORDS_IN_TITLE = 7;
@@ -70,23 +73,23 @@ const createListingURL = (routes, listing) => {
   const variant = isDraft
     ? LISTING_PAGE_DRAFT_VARIANT
     : isPendingApproval
-    ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
-    : null;
+      ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
+      : null;
 
   const linkProps =
     isPendingApproval || isDraft
       ? {
-          name: 'ListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
+        name: 'ListingPageVariant',
+        params: {
+          id,
+          slug,
+          variant,
+        },
+      }
       : {
-          name: 'ListingPage',
-          params: { id, slug },
-        };
+        name: 'ListingPage',
+        params: { id, slug },
+      };
 
   return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
 };
@@ -124,6 +127,7 @@ export const ManageListingCardComponent = props => {
     onToggleMenu,
     renderSizes,
     availabilityEnabled,
+    refreshWishList
   } = props;
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
@@ -171,8 +175,14 @@ export const ManageListingCardComponent = props => {
   const unitTranslationKey = isNightly
     ? 'ManageListingCard.perNight'
     : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit';
+      ? 'ManageListingCard.perDay'
+      : 'ManageListingCard.perUnit';
+
+  const handleRemoveFromWishlist = () => {
+    console.log('REMOVE')
+    codeFacto.removeFromWishList(id)
+    refreshWishList();
+  }
 
   return (
     <div className={classes}>
@@ -362,6 +372,9 @@ export const ManageListingCardComponent = props => {
           ) : null}
         </div>
       </div>
+      <Button style={{ width: '100px', height: '50px' }} onClick={handleRemoveFromWishlist}>
+        Remove from WishL
+      </Button>
     </div>
   );
 };

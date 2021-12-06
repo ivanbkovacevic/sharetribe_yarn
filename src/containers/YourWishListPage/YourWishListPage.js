@@ -16,24 +16,50 @@ import {
   LayoutWrapperFooter,
   Footer,
 } from '../../components';
-import { TopbarContainer } from '../../containers';
+import { TopbarContainer } from '..';
 
-import { closeListing, openListing, getOwnListingsById } from './ManageListingsPage.duck';
-import css from './ManageListingsPage.module.css';
+import { closeListing, openListing, getOwnListingsById } from './YourWishListPage.duck';
+import * as codeFacto from '../../codefacto'
+import css from './YourWishListPage.module.css';
 
-export class ManageListingsPageComponent extends Component {
+export class YourWishListPageComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { listingMenuOpen: null };
+    this.state = { listingMenuOpen: null,wishList:[],refresh:0 };
     this.onToggleMenu = this.onToggleMenu.bind(this);
+    this.refreshWishList = this.refreshWishList.bind(this);
   }
 
   onToggleMenu(listing) {
     this.setState({ listingMenuOpen: listing });
   }
 
+  refreshWishList(){
+    let refreshh= this.state.refresh;
+    this.setState({refresh:refreshh+1})
+    console.log('REFRESH')
+  }
+
+  componentDidMount(){
+    console.log('MOUNT')
+    const getWishList = async () => {
+      await codeFacto.showWishList().then(res => {
+        console.log('wiiiiiiiiiiiii', res)
+        //setShowWishList(res)
+        this.setState({wishList:res})
+      }).catch(err=>{
+        console.log(err)
+      });
+    };
+    (async () => {
+       await getWishList();
+    })()
+  }
+
+
   render() {
+    console.log(this.state.wishList,'wishlist /////')
     const {
       closingListing,
       closingListingError,
@@ -55,20 +81,20 @@ export class ManageListingsPageComponent extends Component {
 
     const loadingResults = (
       <h2>
-        <FormattedMessage id="ManageListingsPage.loadingOwnListings" />
+        <FormattedMessage id="YourWishListPage.loadingOwnListings" />
       </h2>
     );
 
     const queryError = (
       <h2 className={css.error}>
-        <FormattedMessage id="ManageListingsPage.queryError" />
+        <FormattedMessage id="YourWishListPage.queryError" />
       </h2>
     );
 
     const noResults =
       listingsAreLoaded && pagination.totalItems === 0 ? (
         <h1 className={css.title}>
-          <FormattedMessage id="ManageListingsPage.noResults" />
+          <FormattedMessage id="YourWishListPage.noResults" />
         </h1>
       ) : null;
 
@@ -76,7 +102,7 @@ export class ManageListingsPageComponent extends Component {
       listingsAreLoaded && pagination.totalItems > 0 ? (
         <h1 className={css.title}>
           <FormattedMessage
-            id="ManageListingsPage.youHaveListings"
+            id="YourWishListPage.youHaveListings"
             values={{ count: pagination.totalItems }}
           />
         </h1>
@@ -89,7 +115,7 @@ export class ManageListingsPageComponent extends Component {
       listingsAreLoaded && pagination && pagination.totalPages > 1 ? (
         <PaginationLinks
           className={css.pagination}
-          pageName="ManageListingsPage"
+          pageName="YourWishListPage"
           pageSearchParams={{ page }}
           pagination={pagination}
         />
@@ -99,7 +125,7 @@ export class ManageListingsPageComponent extends Component {
     const closingErrorListingId = !!closingListingError && closingListingError.listingId;
     const openingErrorListingId = !!openingListingError && openingListingError.listingId;
 
-    const title = intl.formatMessage({ id: 'ManageListingsPage.title' });
+    const title = intl.formatMessage({ id: 'YourWishListPage.title' });
 
     const panelWidth = 62.5;
     // Render hints for responsive image
@@ -113,16 +139,17 @@ export class ManageListingsPageComponent extends Component {
       <Page title={title} scrollingDisabled={scrollingDisabled}>
         <LayoutSingleColumn>
           <LayoutWrapperTopbar>
-            <TopbarContainer currentPage="ManageListingsPage" />
-            <UserNav selectedPageName="ManageListingsPage" />
+            <TopbarContainer currentPage="YourWishListPage" />
+            <UserNav selectedPageName="YourWishListPage" />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
             {queryInProgress ? loadingResults : null}
             {queryListingsError ? queryError : null}
             <div className={css.listingPanel}>
+              <button onClick={this.refreshWishList}>REFRESH wishList</button>
               {heading}
               <div className={css.listingCards}>
-                {listings.map(l => (
+                {this.state.wishList.map(l => (
                   <ManageListingCard
                     className={css.listingCard}
                     key={l.id.uuid}
@@ -135,6 +162,7 @@ export class ManageListingsPageComponent extends Component {
                     hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
                     hasClosingError={closingErrorListingId.uuid === l.id.uuid}
                     renderSizes={renderSizes}
+                    refreshWishList={this.refreshWishList}
                   />
                 ))}
               </div>
@@ -150,7 +178,7 @@ export class ManageListingsPageComponent extends Component {
   }
 }
 
-ManageListingsPageComponent.defaultProps = {
+YourWishListPageComponent.defaultProps = {
   listings: [],
   pagination: null,
   queryListingsError: null,
@@ -163,7 +191,7 @@ ManageListingsPageComponent.defaultProps = {
 
 const { arrayOf, bool, func, object, shape, string } = PropTypes;
 
-ManageListingsPageComponent.propTypes = {
+YourWishListPageComponent.propTypes = {
   closingListing: shape({ uuid: string.isRequired }),
   closingListingError: shape({
     listingId: propTypes.uuid.isRequired,
@@ -198,10 +226,18 @@ const mapStateToProps = state => {
     openingListingError,
     closingListing,
     closingListingError,
-  } = state.ManageListingsPage;
+  } = state.YourWishListPage;
+
   const listings = getOwnListingsById(state, currentPageResultIds);
 
-  console.log(currentPageResultIds,'managePage')
+    const {
+      currentUser
+    } = state.user;
+  
+
+  console.log(currentPageResultIds,'YwishlistPage')
+  console.log(currentUser,'curent user YwishlistPage')
+  
   return {
     currentPageResultIds,
     listings,
@@ -222,12 +258,12 @@ const mapDispatchToProps = dispatch => ({
   onOpenListing: listingId => dispatch(openListing(listingId)),
 });
 
-const ManageListingsPage = compose(
+const YourWishListPage = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
   ),
   injectIntl
-)(ManageListingsPageComponent);
+)(YourWishListPageComponent);
 
-export default ManageListingsPage;
+export default YourWishListPage;

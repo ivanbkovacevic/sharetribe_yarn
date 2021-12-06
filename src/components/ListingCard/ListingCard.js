@@ -10,6 +10,8 @@ import { richText } from '../../util/richText';
 import { createSlug } from '../../util/urlHelpers';
 import config from '../../config';
 import { NamedLink, ResponsiveImage } from '../../components';
+import * as codeFacto from '../../codefacto'
+import Button from '../Button/Button'
 
 import css from './ListingCard.module.css';
 
@@ -62,48 +64,66 @@ export const ListingCardComponent = props => {
   const unitTranslationKey = isNightly
     ? 'ListingCard.perNight'
     : isDaily
-    ? 'ListingCard.perDay'
-    : 'ListingCard.perUnit';
+      ? 'ListingCard.perDay'
+      : 'ListingCard.perUnit';
+
+  const handleAddToWishlist = () => {
+    console.log('ADD')
+    codeFacto.addToWishList(id)
+  }
+
+  const handleRemoveFromWishlist = () => {
+    console.log('REMOVE')
+    codeFacto.removeFromWishList(id)
+  }
 
   return (
-    <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
-      <div
-        className={css.threeToTwoWrapper}
-        onMouseEnter={() => setActiveListing(currentListing.id)}
-        onMouseLeave={() => setActiveListing(null)}
-      >
-        <div className={css.aspectWrapper}>
-          <LazyImage
-            rootClassName={css.rootForImage}
-            alt={title}
-            image={firstImage}
-            variants={['landscape-crop', 'landscape-crop2x']}
-            sizes={renderSizes}
-          />
-        </div>
-      </div>
-      <div className={css.info}>
-        <div className={css.price}>
-          <div className={css.priceValue} title={priceTitle}>
-            {formattedPrice}
-          </div>
-          <div className={css.perUnit}>
-            <FormattedMessage id={unitTranslationKey} />
+    <>
+      <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+        <div
+          className={css.threeToTwoWrapper}
+          onMouseEnter={() => setActiveListing(currentListing.id)}
+          onMouseLeave={() => setActiveListing(null)}
+        >
+          <div className={css.aspectWrapper}>
+            <LazyImage
+              rootClassName={css.rootForImage}
+              alt={title}
+              image={firstImage}
+              variants={['landscape-crop', 'landscape-crop2x']}
+              sizes={renderSizes}
+            />
           </div>
         </div>
-        <div className={css.mainInfo}>
-          <div className={css.title}>
-            {richText(title, {
-              longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
-              longWordClass: css.longWord,
-            })}
+        <div className={css.info}>
+          <div className={css.price}>
+            <div className={css.priceValue} title={priceTitle}>
+              {formattedPrice}
+            </div>
+            <div className={css.perUnit}>
+              <FormattedMessage id={unitTranslationKey} />
+            </div>
           </div>
-          <div className={css.authorInfo}>
-            <FormattedMessage id="ListingCard.hostedBy" values={{ authorName }} />
+          <div className={css.mainInfo}>
+            <div className={css.title}>
+              {richText(title, {
+                longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
+                longWordClass: css.longWord,
+              })}
+            </div>
+            <div className={css.authorInfo}>
+              <FormattedMessage id="ListingCard.hostedBy" values={{ authorName }} />
+            </div>
           </div>
         </div>
-      </div>
-    </NamedLink>
+      </NamedLink>
+      <Button style={{ width: '100px', height: '50px' }} onClick={handleAddToWishlist}>
+        Add to wishlist
+      </Button>
+      <Button style={{ width: '100px', height: '50px' }} onClick={handleRemoveFromWishlist}>
+        Remove from WishL
+      </Button>
+    </>
   );
 };
 
