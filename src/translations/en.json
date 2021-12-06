@@ -438,6 +438,7 @@
   "ManageListingsPage.youHaveListings": "You have {count} {count, plural, one {listing} other {listings}}",
   "ManageListingsPage.yourListings": "Your listings",
 
+  "YourWishListPage.login": "You must be loged in so you can see your wish list",
   "YourWishListPage.accountSettings": "Account settings",
   "YourWishListPage.loadingOwnListings": "Loading listings…",
   "YourWishListPage.noResults": "You don't have any listings.",

@@ -15,6 +15,7 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
+  NamedLink
 } from '../../components';
 import { TopbarContainer } from '..';
 
@@ -26,7 +27,7 @@ export class YourWishListPageComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { listingMenuOpen: null,wishList:[],refresh:0 };
+    this.state = { listingMenuOpen: null, wishList: [], refresh: 0 };
     this.onToggleMenu = this.onToggleMenu.bind(this);
     this.refreshWishList = this.refreshWishList.bind(this);
   }
@@ -35,31 +36,35 @@ export class YourWishListPageComponent extends Component {
     this.setState({ listingMenuOpen: listing });
   }
 
-  refreshWishList(){
-    let refreshh= this.state.refresh;
-    this.setState({refresh:refreshh+1})
+  refreshWishList() {
+    let refreshh = this.state.refresh;
+    this.setState({ refresh: refreshh + 1 })
     console.log('REFRESH')
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log('MOUNT')
+    // if(!currentUser){
+
+    // }
     const getWishList = async () => {
       await codeFacto.showWishList().then(res => {
         console.log('wiiiiiiiiiiiii', res)
         //setShowWishList(res)
-        this.setState({wishList:res})
-      }).catch(err=>{
+        this.setState({ wishList: res })
+      }).catch(err => {
         console.log(err)
       });
     };
     (async () => {
-       await getWishList();
+      await getWishList();
     })()
   }
 
 
   render() {
-    console.log(this.state.wishList,'wishlist /////')
+    console.log(this.state.wishList, 'wishlist /////')
+
     const {
       closingListing,
       closingListingError,
@@ -74,7 +79,12 @@ export class YourWishListPageComponent extends Component {
       queryParams,
       scrollingDisabled,
       intl,
+      currentUser,
     } = this.props;
+
+    if (!currentUser) {
+      console.log('GO TO LOG IN')
+    }
 
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
     const listingsAreLoaded = !queryInProgress && hasPaginationInfo;
@@ -135,6 +145,14 @@ export class YourWishListPageComponent extends Component {
       `${panelWidth / 3}vw`,
     ].join(', ');
 
+    const linkProp = {
+      text: <FormattedMessage id="YourWishListPage.yourListings" />,
+      selected: true,
+      linkProps: {
+        name: 'LandingPage',
+      },
+    }
+
     return (
       <Page title={title} scrollingDisabled={scrollingDisabled}>
         <LayoutSingleColumn>
@@ -147,24 +165,30 @@ export class YourWishListPageComponent extends Component {
             {queryListingsError ? queryError : null}
             <div className={css.listingPanel}>
               <button onClick={this.refreshWishList}>REFRESH wishList</button>
-              {heading}
+              {/* {heading} */}
               <div className={css.listingCards}>
-                {this.state.wishList.map(l => (
-                  <ManageListingCard
-                    className={css.listingCard}
-                    key={l.id.uuid}
-                    listing={l}
-                    isMenuOpen={!!listingMenuOpen && listingMenuOpen.id.uuid === l.id.uuid}
-                    actionsInProgressListingId={openingListing || closingListing}
-                    onToggleMenu={this.onToggleMenu}
-                    onCloseListing={onCloseListing}
-                    onOpenListing={onOpenListing}
-                    hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
-                    hasClosingError={closingErrorListingId.uuid === l.id.uuid}
-                    renderSizes={renderSizes}
-                    refreshWishList={this.refreshWishList}
-                  />
-                ))}
+                {currentUser ?
+                  this.state.wishList.map(l => (
+                    <ManageListingCard
+                      className={css.listingCard}
+                      key={l.id.uuid}
+                      listing={l}
+                      isMenuOpen={!!listingMenuOpen && listingMenuOpen.id.uuid === l.id.uuid}
+                      actionsInProgressListingId={openingListing || closingListing}
+                      onToggleMenu={this.onToggleMenu}
+                      onCloseListing={onCloseListing}
+                      onOpenListing={onOpenListing}
+                      hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
+                      hasClosingError={closingErrorListingId.uuid === l.id.uuid}
+                      renderSizes={renderSizes}
+                      refreshWishList={this.refreshWishList}
+                    />
+                  ))
+                  :
+                  <NamedLink name="LoginPage" className={css.link}>
+                    <FormattedMessage id="YourWishListPage.login" />
+                  </NamedLink>
+                }
               </div>
               {paginationLinks}
             </div>
@@ -230,14 +254,14 @@ const mapStateToProps = state => {
 
   const listings = getOwnListingsById(state, currentPageResultIds);
 
-    const {
-      currentUser
-    } = state.user;
-  
+  const {
+    currentUser
+  } = state.user;
 
-  console.log(currentPageResultIds,'YwishlistPage')
-  console.log(currentUser,'curent user YwishlistPage')
-  
+
+  console.log(currentPageResultIds, 'YwishlistPage')
+  console.log(currentUser, 'CUrenT YWPAGE')
+
   return {
     currentPageResultIds,
     listings,
@@ -250,6 +274,7 @@ const mapStateToProps = state => {
     openingListingError,
     closingListing,
     closingListingError,
+    currentUser,
   };
 };
 
