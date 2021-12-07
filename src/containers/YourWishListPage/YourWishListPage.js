@@ -7,6 +7,8 @@ import { propTypes } from '../../util/types';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import {
   ManageListingCard,
+  SearchResultsPanel,
+  ListingCard,
   Page,
   PaginationLinks,
   UserNav,
@@ -44,9 +46,7 @@ export class YourWishListPageComponent extends Component {
 
   componentDidMount() {
     console.log('MOUNT')
-    // if(!currentUser){
 
-    // }
     const getWishList = async () => {
       await codeFacto.showWishList().then(res => {
         console.log('wiiiiiiiiiiiii', res)
@@ -63,7 +63,6 @@ export class YourWishListPageComponent extends Component {
 
 
   render() {
-    console.log(this.state.wishList, 'wishlist /////')
 
     const {
       closingListing,

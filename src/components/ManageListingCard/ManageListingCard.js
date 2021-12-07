@@ -181,7 +181,7 @@ export const ManageListingCardComponent = props => {
   const handleRemoveFromWishlist = () => {
     console.log('REMOVE')
     codeFacto.removeFromWishList(id)
-    refreshWishList();
+      refreshWishList()
   }
 
   return (

@@ -143,9 +143,9 @@
    :on :transition/accept,
    :to :actor.role/customer,
    :template :booking-request-accepted}
-   {:name :notification/new-booking-request-for-customer
-   :on :transition/confirm-payment
-   :to :actor.role/customer
+  {:name :notification/new-booking-request-for-customer,
+   :on :transition/confirm-payment,
+   :to :actor.role/customer,
    :template :new-booking-request-for-customer}
   {:name :notification/booking-request-declined,
    :on :transition/decline,
