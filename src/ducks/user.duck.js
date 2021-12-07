@@ -1,6 +1,6 @@
 import { denormalisedResponseEntities, ensureOwnListing } from '../util/data';
 import { storableError } from '../util/errors';
-import { transitionsToRequested } from '../util/transaction';
+// import { transitionsToRequested } from '../util/transaction';
 import { LISTING_STATE_DRAFT } from '../util/types';
 import * as log from '../util/log';
 import { authInfo } from './Auth.duck';
@@ -292,7 +292,7 @@ export const fetchCurrentUserNotifications = () => (dispatch, getState, sdk) => 
 
   const apiQueryParams = {
     only: 'sale',
-    last_transitions: transitionsToRequested,
+    // last_transitions: transitionsToRequested,
     page: 1,
     per_page: NOTIFICATION_PAGE_SIZE,
   };

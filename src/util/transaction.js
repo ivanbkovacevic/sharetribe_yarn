@@ -89,9 +89,9 @@ const STATE_INITIAL = 'initial';
 const STATE_ENQUIRY = 'enquiry';
 const STATE_PENDING_PAYMENT = 'pending-payment';
 const STATE_PAYMENT_EXPIRED = 'payment-expired';
-const STATE_PREAUTHORIZED = 'preauthorized';
+// const STATE_PREAUTHORIZED = 'preauthorized';
 const STATE_DECLINED = 'declined';
-const STATE_DECLINED_BY_OPERATOR = 'declined-by-operator';
+// const STATE_DECLINED_BY_OPERATOR = 'declined-by-operator';
 const STATE_ACCEPTED = 'accepted';
 const STATE_CANCELED = 'canceled';
 const STATE_DELIVERED = 'delivered';
@@ -134,22 +134,22 @@ const stateDescription = {
     [STATE_PENDING_PAYMENT]: {
       on: {
         [TRANSITION_EXPIRE_PAYMENT]: STATE_PAYMENT_EXPIRED,
-        [TRANSITION_CONFIRM_PAYMENT]: STATE_PREAUTHORIZED,
+        // [TRANSITION_CONFIRM_PAYMENT]: STATE_PREAUTHORIZED,
       },
     },
 
     [STATE_PAYMENT_EXPIRED]: {},
-    [STATE_PREAUTHORIZED]: {
-      on: {
-        [TRANSITION_DECLINE]: STATE_DECLINED,
-        [TRANSITION_EXPIRE]: STATE_DECLINED,
-        [TRANSITION_DECLINE_BY_OPERATOR]: STATE_DECLINED_BY_OPERATOR,
-        [TRANSITION_ACCEPT]: STATE_ACCEPTED,
-      },
-    },
+    // [STATE_PREAUTHORIZED]: {
+    //   on: {
+    //     [TRANSITION_DECLINE]: STATE_DECLINED,
+    //     [TRANSITION_EXPIRE]: STATE_DECLINED,
+    //     [TRANSITION_DECLINE_BY_OPERATOR]: STATE_DECLINED_BY_OPERATOR,
+    //     [TRANSITION_ACCEPT]: STATE_ACCEPTED,
+    //   },
+    // },
 
     [STATE_DECLINED]: {},
-    [STATE_DECLINED_BY_OPERATOR]: {},
+    // [STATE_DECLINED_BY_OPERATOR]: {},
     [STATE_ACCEPTED]: {
       on: {
         [TRANSITION_CANCEL]: STATE_CANCELED,
@@ -217,7 +217,7 @@ const getTransitionsToState = getTransitionsToStateFn(stateDescription);
 
 // This is needed to fetch transactions that need response from provider.
 // I.e. transactions which provider needs to accept or decline
-export const transitionsToRequested = getTransitionsToState(STATE_PREAUTHORIZED);
+// export const transitionsToRequested = getTransitionsToState(STATE_PREAUTHORIZED);
 
 /**
  * Helper functions to figure out if transaction is in a specific state.
@@ -225,7 +225,7 @@ export const transitionsToRequested = getTransitionsToState(STATE_PREAUTHORIZED)
  */
 const transitionsToDeclined = [
   ...getTransitionsToState(STATE_DECLINED),
-  ...getTransitionsToState(STATE_DECLINED_BY_OPERATOR),
+  // ...getTransitionsToState(STATE_DECLINED_BY_OPERATOR),
 ];
 
 const txLastTransition = tx => ensureTransaction(tx).attributes.lastTransition;
@@ -248,7 +248,7 @@ export const txIsAccepted = tx =>
   getTransitionsToState(STATE_ACCEPTED).includes(txLastTransition(tx));
 
 export const txIsDeclined = tx =>
-  getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
+transitionsToDeclined.includes(txLastTransition(tx));
 
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
@@ -313,7 +313,7 @@ export const isRelevantPastTransition = transition => {
     TRANSITION_COMPLETE,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_DECLINE,
-    TRANSITION_DECLINE_BY_OPERATOR,
+    // TRANSITION_DECLINE_BY_OPERATOR,
     TRANSITION_EXPIRE,
     TRANSITION_REVIEW_1_BY_CUSTOMER,
     TRANSITION_REVIEW_1_BY_PROVIDER,
