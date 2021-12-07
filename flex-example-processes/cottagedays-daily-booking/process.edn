@@ -32,11 +32,15 @@
     {:name :action/stripe-refund-payment}],
    :from :state/pending-payment,
    :to :state/payment-expired}
+   
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
-   :actions [{:name :action/stripe-confirm-payment-intent}],
+   :actions [{:name :action/stripe-confirm-payment-intent},
+     {:name :action/stripe-capture-payment-intent},
+     {:name :action/accept-booking}],
    :from :state/pending-payment,
-   :to :state/preauthorized}
+   :to :state/accepted}
+
   {:name :transition/accept,
    :actor :actor.role/provider,
    :actions
@@ -44,30 +48,9 @@
     {:name :action/reveal-provider-protected-data,
      :config {:key-mapping {:phoneNumber :providerPhoneNumber}}}
     {:name :action/stripe-capture-payment-intent}],
-   :from :state/preauthorized,
+   :from :state/pending-payment,
    :to :state/accepted}
-  {:name :transition/decline,
-   :actor :actor.role/provider,
-   :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
-   :from :state/preauthorized,
-   :to :state/declined}
-  {:name :transition/expire,
-   :at
-   {:fn/min
-    [{:fn/plus
-      [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
-       {:fn/period ["P6D"]}]}
-     {:fn/plus
-      [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
-   :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
-   :from :state/preauthorized,
-   :to :state/declined}
+
   {:name :transition/complete,
    :at {:fn/timepoint [:time/booking-end]},
    :actions [{:name :action/stripe-create-payout}],
@@ -81,14 +64,6 @@
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
    :to :state/cancelled}
-  {:name :transition/decline-preauthorized-by-operator,
-   :actor :actor.role/operator,
-   :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
-   :from :state/preauthorized,
-   :to :state/declined-by-operator}
   {:name :transition/review-1-by-provider,
    :actor :actor.role/provider,
    :actions [{:name :action/post-review-by-provider}],
@@ -147,14 +122,7 @@
    :on :transition/confirm-payment,
    :to :actor.role/customer,
    :template :new-booking-request-for-customer}
-  {:name :notification/booking-request-declined,
-   :on :transition/decline,
-   :to :actor.role/customer,
-   :template :booking-request-declined}
-  {:name :notification/booking-request-auto-declined,
-   :on :transition/expire,
-   :to :actor.role/customer,
-   :template :booking-request-auto-declined}
+  
   {:name :notification/money-paid,
    :on :transition/complete,
    :to :actor.role/provider,
