@@ -219,17 +219,18 @@ export const queryListingsError = e => ({
 });
 
 // Throwing error for new (loadData may need that info)
-export const queryOwnListings = queryParams => (dispatch, getState, sdk) => {
+export const queryWishListings = queryParams => (dispatch, getState, sdk) => {
   dispatch(queryListingsRequest(queryParams));
 
   const { perPage, ...rest } = queryParams;
-  const params = { ...rest, per_page: perPage };
+  const params = { ...rest, per_page: perPage, title:'TES3'};
 
-  return sdk.ownListings
+  return sdk.listings
     .query(params)
     .then(response => {
       dispatch(addOwnEntities(response));
       dispatch(queryListingsSuccess(response));
+      console.log(response,'RRRRRRRRRRRRRRRR')
       return response;
     })
     .catch(e => {
@@ -269,9 +270,10 @@ export const openListing = listingId => (dispatch, getState, sdk) => {
 export const loadData = (params, search) => {
   const queryParams = parse(search);
   const page = queryParams.page || 1;
-  return queryOwnListings({
+  return queryWishListings({
     ...queryParams,
     page,
+    title:'TES3',
     perPage: RESULT_PAGE_SIZE,
     include: ['images'],
     'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],

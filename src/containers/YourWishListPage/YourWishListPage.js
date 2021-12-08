@@ -32,6 +32,7 @@ export class YourWishListPageComponent extends Component {
     this.state = { listingMenuOpen: null, wishList: [], refresh: 0 };
     this.onToggleMenu = this.onToggleMenu.bind(this);
     this.refreshWishList = this.refreshWishList.bind(this);
+    this.getWishList = this.getWishList.bind(this);
   }
 
   onToggleMenu(listing) {
@@ -44,23 +45,19 @@ export class YourWishListPageComponent extends Component {
     console.log('REFRESH')
   }
 
+   async getWishList(){
+    codeFacto.showWishList().then(res => {
+      console.log('wiiiiiiiiiiiii', res.length)
+      this.setState({ wishList: res })
+    }).catch(err => {
+      console.log(err)
+    });
+  };
+
   componentDidMount() {
     console.log('MOUNT')
-
-    const getWishList = async () => {
-      await codeFacto.showWishList().then(res => {
-        console.log('wiiiiiiiiiiiii', res)
-        //setShowWishList(res)
-        this.setState({ wishList: res })
-      }).catch(err => {
-        console.log(err)
-      });
-    };
-    (async () => {
-      await getWishList();
-    })()
+      this.getWishList();
   }
-
 
   render() {
 

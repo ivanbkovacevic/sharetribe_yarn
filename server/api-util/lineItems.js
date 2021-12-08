@@ -30,7 +30,7 @@ const PROVIDER_COMMISSION_PERCENTAGE = -10;
 
 const resolveCleaningFeePrice = listing => {
   const publicData = listing.attributes.publicData;
-  const cleaningFee = publicData && publicData.cleaningFee;
+  const cleaningFee = publicData && publicData?.cleaningFee;
   const { amount, currency } = cleaningFee;
 
   if (amount && currency) {
@@ -81,6 +81,7 @@ exports.transactionLineItems = (listing, bookingData) => {
   };
 
   const lineItems = [booking, ...cleaningFee, providerCommission];
-
+console.log(lineItems,"IIIIIIIIIIIIIIIIIIIIIIIIIItems")
   return lineItems;
+
 };
