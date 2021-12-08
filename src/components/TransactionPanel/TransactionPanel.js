@@ -10,7 +10,7 @@ import {
   txIsEnquired,
   txIsPaymentExpired,
   txIsPaymentPending,
-  txIsRequested,
+  // txIsRequested,
   txHasBeenDelivered,
 } from '../../util/transaction';
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
