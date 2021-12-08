@@ -99,7 +99,7 @@ export const showListing = (listingId) => {
   });
 }
 
-
+showListing('61b0a902-f813-49a1-8c39-2c5dbfb9c59c')
 export const showWishList = async () => {
   let wishListToShow = [];
   return sdk.currentUser.show().then(res => {
