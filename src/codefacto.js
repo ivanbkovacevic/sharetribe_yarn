@@ -44,7 +44,7 @@ wishList1 = JSON.stringify(wishList1);
 
 // Create new SDK instance
 const sdk = createInstance({
-  clientId: '050e5159-2efe-45c5-b0e1-f2fcf5a31f70'
+  clientId: '4833af73-f662-489a-bcf7-1128687702fb'
 });
 
 
@@ -100,6 +100,7 @@ export const showListing = (listingId) => {
 }
 
 showListing('61b0a902-f813-49a1-8c39-2c5dbfb9c59c')
+
 export const showWishList = async () => {
   let wishListToShow = [];
   return sdk.currentUser.show().then(res => {
@@ -125,11 +126,13 @@ export const addToWishList = async (listingId) => {
     console.log(userWishList, 'uuuuuuuuuuuuuuuuu')
   });
 
-  if (userWishList.some((el) => listingId === el) === true) {
-    console.log('already in there')
-    return
-  } else {
-    userWishList = [...userWishList, listingId];
+  if(userWishList.length > 0){
+    if (userWishList.some((el) => listingId === el) === true) {
+      console.log('already in there')
+      return
+    } else {
+      userWishList = [...userWishList, listingId];
+    }
   }
 
   sdk.currentUser.updateProfile({
@@ -174,17 +177,15 @@ export const showCurrentUser = () => {
   });
 }
 
-// const odmah = () => {
-//     sdk.currentUser.updateProfile({
-//         privateData: {
-//           wishList: [],
-//         },
-//       }, {
-//         expand: true
-//       }).then(res => {
-//         // res.data
-//         console.log('ODMAHHHHHHHHHHHREMOVED LISTING from USER wishList', res)
-//       });
-//     }
 
-//  odmah();
+ export const odmah=(listingId)=>{
+   console.log('bnesto bilo')
+   sdk.listings.show({ id: listingId}).then(res => {
+     console.log('SHOW LISssssssTING', res)
+   });
+
+  //  sdk.listings.query({meta_rating:3 }).then(res => {
+  //   console.log('SHOW LISssssssTING', res)
+  // });
+ }
+  
