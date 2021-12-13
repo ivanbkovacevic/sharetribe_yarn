@@ -44,7 +44,7 @@ wishList1 = JSON.stringify(wishList1);
 
 // Create new SDK instance
 const sdk = createInstance({
-  clientId: '050e5159-2efe-45c5-b0e1-f2fcf5a31f70'
+  clientId: '4833af73-f662-489a-bcf7-1128687702fb'
 });
 
 
