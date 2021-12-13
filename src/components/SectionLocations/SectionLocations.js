@@ -9,10 +9,12 @@ import { NamedLink } from '../../components';
 import css from './SectionLocations.module.css';
 
 import helsinkiImage from './images/location_helsinki.jpg';
+import belgradeImage from './images/location_belgrade.jpg';
 // Find a new image and save it with dimensions: 648x448
 import aucklandImage from './images/location_auckland.jpg';
 import rovaniemiImage from './images/location_rovaniemi.jpg';
 import rukaImage from './images/location_ruka.jpg';
+import * as kocha from '../../codefacto';
 
 class LocationImage extends Component {
   render() {
@@ -52,6 +54,11 @@ const SectionLocations = props => {
         <FormattedMessage id="SectionLocations.title" />
       </div>
       <div className={css.locations}>
+      {locationLink(
+          'Belgrade',
+          belgradeImage,
+          '?address=Belgrade%2C%20Serbia&bounds=46.8125%2C21.4612%2C59.43.5708397%2C18.4722489&origin=60.16985569999999%2C24.93837910000002',
+        )}
         {locationLink(
           'Auckland',
           aucklandImage,
