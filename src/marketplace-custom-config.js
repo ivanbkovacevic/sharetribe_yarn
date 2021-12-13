@@ -137,46 +137,46 @@ export const filters = [
     },
   },
 
-  {
-    id: 'reviews',
-    label: 'Reviews score',
-    type: 'SelectMultipleFilter',
-    group: 'primary',
-    queryParamNames: ['meta_rating'],
-    config: {
-      // Optional modes: 'has_all', 'has_any'
-      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
+  // {
+  //   id: 'reviews',
+  //   label: 'Reviews score',
+  //   type: 'SelectMultipleFilter',
+  //   group: 'primary',
+  //   queryParamNames: ['pub_rating'],
+  //   config: {
+  //     // Optional modes: 'has_all', 'has_any'
+  //     // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+  //     searchMode: 'has_all',
 
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for this web app's UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      schemaType: 'multi-enum',
-      options: [
-        {
-          key: 1,
-          label: 'Score_1',
-        },
-        {
-          key: 2,
-          label: 'Score_2',
-        },
-        {
-          key: 3,
-          label: 'Score_3',
-        },
-        {
-          key: 4,
-          label: 'Score_4',
-        },
-        {
-          key: 5,
-          label: 'Score_5',
-        },
-      ],
-    },
-  },
+  //     // "key" is the option you see in Flex Console.
+  //     // "label" is set here for this web app's UI only.
+  //     // Note: label is not added through the translation files
+  //     // to make filter customizations a bit easier.
+  //     schemaType: 'multi-enum',
+  //     options: [
+  //       {
+  //         key: 1,
+  //         label: 'Score_1',
+  //       },
+  //       {
+  //         key: 2,
+  //         label: 'Score_2',
+  //       },
+  //       {
+  //         key: 3,
+  //         label: 'Score_3',
+  //       },
+  //       {
+  //         key: 4,
+  //         label: 'Score_4',
+  //       },
+  //       {
+  //         key: 5,
+  //         label: 'Score_5',
+  //       },
+  //     ],
+  //   },
+  // },
 
   {
     id: 'view',
