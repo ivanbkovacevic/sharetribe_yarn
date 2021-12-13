@@ -106,13 +106,37 @@ var listingId = new UUID("61b334c6-6bef-4d8b-a9b2-4b6be18d7f62");
 
 const odmah = () => {
   sdk.listings.show({
-   id:'61b20923-6312-428b-bb96-94497b562325',
+   id:'61b2069c-b691-4d6f-ab46-c55dff993131',
    include: ['images'],
    'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],
    'limit.images': 1,
   }).then(res => {
-    console.log(res, '----QUERYED-----');
+    console.log(res, '----sHOw ODMAH-----');
   });
     }
 
  odmah();
+
+//  const odmahUpdate = () => {
+//   sdk.ownListings.update({
+//    id:'61b2069c-b691-4d6f-ab46-c55dff993131',
+//    publicData:{
+//      rating:2,
+//    } 
+//   }).then(res => {
+//     console.log(res, '----UPDATED-----');
+//   });
+//     }
+
+//  odmahUpdate();
+
+const odmahQueryListing = () => {
+  sdk.listings.query({
+    pub_rating: 5,
+  }).then(res => {
+    console.log(res, '----ODMAH QUERY-----');
+  });
+
+}
+
+odmahQueryListing();
