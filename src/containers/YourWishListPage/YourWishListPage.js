@@ -45,7 +45,7 @@ export class YourWishListPageComponent extends Component {
     console.log('REFRESH')
   }
 
-   async getWishList(){
+  async getWishList() {
     codeFacto.showWishList().then(res => {
       console.log('wiiiiiiiiiiiii', res.length)
       this.setState({ wishList: res })
@@ -56,7 +56,7 @@ export class YourWishListPageComponent extends Component {
 
   componentDidMount() {
     console.log('MOUNT')
-      this.getWishList();
+    this.getWishList();
   }
 
   render() {
@@ -149,6 +149,16 @@ export class YourWishListPageComponent extends Component {
       },
     }
 
+    // Panel width relative to the viewport
+    const panelMediumWidth = 50;
+    const panelLargeWidth = 62.5;
+    const cardRenderSizes = [
+      '(max-width: 767px) 100vw',
+      `(max-width: 1023px) ${panelMediumWidth}vw`,
+      `(max-width: 1920px) ${panelLargeWidth / 2}vw`,
+      `${panelLargeWidth / 3}vw`,
+    ].join(', ');
+
     return (
       <Page title={title} scrollingDisabled={scrollingDisabled}>
         <LayoutSingleColumn>
@@ -165,18 +175,11 @@ export class YourWishListPageComponent extends Component {
               <div className={css.listingCards}>
                 {currentUser ?
                   this.state.wishList.map(l => (
-                    <ManageListingCard
+                    <ListingCard
                       className={css.listingCard}
                       key={l.id.uuid}
                       listing={l}
-                      isMenuOpen={!!listingMenuOpen && listingMenuOpen.id.uuid === l.id.uuid}
-                      actionsInProgressListingId={openingListing || closingListing}
-                      onToggleMenu={this.onToggleMenu}
-                      onCloseListing={onCloseListing}
-                      onOpenListing={onOpenListing}
-                      hasOpeningError={openingErrorListingId.uuid === l.id.uuid}
-                      hasClosingError={closingErrorListingId.uuid === l.id.uuid}
-                      renderSizes={renderSizes}
+                      renderSizes={cardRenderSizes}
                       refreshWishList={this.refreshWishList}
                     />
                   ))

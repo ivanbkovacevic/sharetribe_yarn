@@ -6,91 +6,11 @@ const { Money, UUID } = sdkTypes;
 let userWishList = [{}];
 
 
-export let wishList1 =
-{
-  id: new UUID("c6ff7190-bdf7-47a0-8a2b-e3136e74334f"),
-  type: "listing",
-  attributes: {
-    description: "7-speed2222222222 Hybrid",
-    deleted: false,
-    geolocation: new LatLng(40.64542, -74.08508),
-    createdAt: new Date("2018-03-23T08:40:24.443Z"),
-    state: "published",
-    title: "Peugeot eT101",
-    availabilityPlan: {
-      type: "availability-plan/day"
-    },
-    publicData: {
-      address: {
-        city: "New York",
-        country: "USA",
-        state: "NY",
-        street: "230 Hamilton Ave"
-      },
-      category: "road",
-      gears: 22,
-      rules: "This is a nice, bike! Please, be careful with it."
-    },
-    metadata: {
-      promoted: true
-    },
-    price: new Money(111, "EUR"),
-  },
-}
-
-wishList1 = JSON.stringify(wishList1);
-
-
-
 // Create new SDK instance
 const sdk = createInstance({
   clientId: '0fd1e949-51a4-4fe0-813e-7d585a661ec5'
 });
 
-
-export const createListing = () => {
-  sdk.ownListings.create({
-    title: "FERARRI",
-    description: "7-speed Hybrid",
-    geolocation: new LatLng(40.64542, -74.08508),
-    availabilityPlan: {
-      type: "availability-plan/day",
-      entries: [
-        {
-          dayOfWeek: "mon",
-          seats: 3
-        },
-        {
-          dayOfWeek: "fri",
-          seats: 1
-        }
-      ]
-    },
-    privateData: {
-      externalServiceId: "abcd-service-id-1234"
-    },
-    publicData: {
-      address: {
-        city: "New York",
-        country: "USA",
-        state: "NY",
-        street: "230 Hamilton Ave"
-      },
-      category: "road",
-      gears: 22,
-      rules: "This is a nice, bike! Please, be careful with it."
-    },
-    price: new Money(1590, "USD"),
-    images: [
-
-    ]
-  }, {
-    expand: true,
-    include: ["images"]
-  }).then(res => {
-    console.log(res.data)
-  });
-}
 ///////////////////////////////////////////////////
 
 export const showListing = (listingId) => {
@@ -105,9 +25,11 @@ export const showWishList = async () => {
   return sdk.currentUser.show().then(res => {
     userWishList = res.data.data.attributes.profile.privateData.wishList;
     
-    userWishList.forEach(async (wishId) => {
+    userWishList.map(async (wishId) => {
+
       sdk.listings.show({ id: wishId }).then(res => {
-        let response = res.data.data
+        let response = res.data.data;
+        console.log(response,'-------response--------')
         wishListToShow.push(response)
       });
     })
@@ -117,31 +39,37 @@ export const showWishList = async () => {
 }
 
 export const addToWishList = async (listingId) => {
+  let addedToWishList=false;
   await sdk.currentUser.show().then(res => {
-    // res.data contains the response data
-    console.log('CURETN USER', res)
-
-    userWishList = res.data.data.attributes.profile.privateData.wishList
+    if(res.data.data.attributes.profile.privateData.wishList){
+      userWishList = res.data.data.attributes.profile.privateData.wishList;
+    }else{
+      userWishList = [{}];
+    }
     console.log(userWishList, 'uuuuuuuuuuuuuuuuu')
+    addedToWishList=true;
+    console.log(addedToWishList,'----added toish list flag')
   });
 
   if (userWishList.some((el) => listingId === el) === true) {
-    console.log('already in there')
+    console.log('Already in WishList')
     return
   } else {
     userWishList = [...userWishList, listingId];
   }
 
-  sdk.currentUser.updateProfile({
-    privateData: {
-      wishList: userWishList,
-    },
-  }, {
-    expand: true
-  }).then(res => {
-    // res.data
-    console.log('Added LISTING to USER wishList', res)
-  });
+  if(addedToWishList==true){
+    sdk.currentUser.updateProfile({
+      privateData: {
+        wishList: userWishList,
+      },
+    }, {
+      expand: true
+    }).then(res => {
+      // res.data
+      console.log('Added LISTING to USER wishList', res)
+    });
+  }
 }
 
 export const removeFromWishList = async (listingId) => {

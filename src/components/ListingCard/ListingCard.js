@@ -10,8 +10,8 @@ import { richText } from '../../util/richText';
 import { createSlug } from '../../util/urlHelpers';
 import config from '../../config';
 import { NamedLink, ResponsiveImage } from '../../components';
-import * as codeFacto from '../../codefacto'
-import Button from '../Button/Button'
+import * as codeFacto from '../../codefacto';
+import Button from '../Button/Button';
 
 import css from './ListingCard.module.css';
 
@@ -56,7 +56,7 @@ export const ListingCardComponent = props => {
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
   const { formattedPrice, priceTitle } = priceData(price, intl);
-
+  console.log(listing,'---LISTINGCARD---')
   const unitType = config.bookingUnitType;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
