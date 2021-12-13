@@ -140,7 +140,7 @@ export const filters = [
     label: 'Reviews score',
     type: 'SelectMultipleFilter',
     group: 'primary',
-    queryParamNames: ['meta_rating'],
+    queryParamNames: ['pub_rating'],
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
