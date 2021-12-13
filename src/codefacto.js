@@ -102,17 +102,17 @@ export const showCurrentUser = () => {
   });
 }
 
-// const odmah = () => {
-//     sdk.currentUser.updateProfile({
-//         privateData: {
-//           wishList: [],
-//         },
-//       }, {
-//         expand: true
-//       }).then(res => {
-//         // res.data
-//         console.log('ODMAHHHHHHHHHHHREMOVED LISTING from USER wishList', res)
-//       });
-//     }
+var listingId = new UUID("61b334c6-6bef-4d8b-a9b2-4b6be18d7f62");
 
-//  odmah();
+const odmah = () => {
+  sdk.listings.show({
+   id:'61b20923-6312-428b-bb96-94497b562325',
+   include: ['images'],
+   'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],
+   'limit.images': 1,
+  }).then(res => {
+    console.log(res, '----QUERYED-----');
+  });
+    }
+
+ odmah();

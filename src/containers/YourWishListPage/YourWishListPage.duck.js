@@ -230,7 +230,6 @@ export const queryWishListings = queryParams => (dispatch, getState, sdk) => {
     .then(response => {
       dispatch(addOwnEntities(response));
       dispatch(queryListingsSuccess(response));
-      console.log(response,'RRRRRRRRRRRRRRRR')
       return response;
     })
     .catch(e => {
@@ -273,7 +272,6 @@ export const loadData = (params, search) => {
   return queryWishListings({
     ...queryParams,
     page,
-    title:'TES3',
     perPage: RESULT_PAGE_SIZE,
     include: ['images'],
     'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],

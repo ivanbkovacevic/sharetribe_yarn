@@ -6,8 +6,6 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import {
-  ManageListingCard,
-  SearchResultsPanel,
   ListingCard,
   Page,
   PaginationLinks,
