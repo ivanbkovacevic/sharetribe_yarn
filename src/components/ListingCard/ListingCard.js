@@ -44,7 +44,7 @@ class ListingImage extends Component {
 const LazyImage = lazyLoadWithDimensions(ListingImage, { loadAfterInitialRendering: 3000 });
 
 export const ListingCardComponent = props => {
-  const { className, rootClassName, intl, listing, renderSizes, setActiveListing } = props;
+  const { className, rootClassName, intl, listing, renderSizes, setActiveListing, pageTitle } = props;
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
@@ -117,12 +117,15 @@ export const ListingCardComponent = props => {
           </div>
         </div>
       </NamedLink>
-      <Button style={{ width: '100px', height: '50px' }} onClick={handleAddToWishlist}>
-        Add to wishlist
-      </Button>
-      <Button style={{ width: '100px', height: '50px' }} onClick={handleRemoveFromWishlist}>
-        Remove from WishL
-      </Button>
+      {pageTitle !== 'Your wishlist' ?
+        <Button style={{ width: '100px', height: '50px' }} onClick={handleAddToWishlist}>
+          Add to wishlist
+        </Button>
+        :
+        <Button style={{ width: '100px', height: '50px' }} onClick={handleRemoveFromWishlist}>
+          Remove from WishL
+        </Button>
+      }
     </>
   );
 };
@@ -132,6 +135,7 @@ ListingCardComponent.defaultProps = {
   rootClassName: null,
   renderSizes: null,
   setActiveListing: () => null,
+  pageTitle: null,
 };
 
 ListingCardComponent.propTypes = {

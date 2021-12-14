@@ -179,6 +179,7 @@ export class YourWishListPageComponent extends Component {
                       listing={l}
                       renderSizes={cardRenderSizes}
                       refreshWishList={this.refreshWishList}
+                      pageTitle={title}
                     />
                   ))
                   :
