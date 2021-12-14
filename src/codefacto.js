@@ -104,31 +104,30 @@ export const showCurrentUser = () => {
 
 var listingId = new UUID("61b334c6-6bef-4d8b-a9b2-4b6be18d7f62");
 
-const odmah = () => {
+const odmahShowListing = (listingId) => {
   sdk.listings.show({
-   id:'61b2069c-b691-4d6f-ab46-c55dff993131',
+   id:listingId,
    include: ['images'],
    'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],
    'limit.images': 1,
   }).then(res => {
-    console.log(res, '----sHOw ODMAH-----');
+    console.log(res, '----sHOw ODMAH LISTING-----');
   });
     }
 
- odmah();
+  
 
-//  const odmahUpdate = () => {
-//   sdk.ownListings.update({
-//    id:'61b2069c-b691-4d6f-ab46-c55dff993131',
-//    publicData:{
-//      rating:2,
-//    } 
-//   }).then(res => {
-//     console.log(res, '----UPDATED-----');
-//   });
-//     }
-
-//  odmahUpdate();
+ const odmahUpdateListing = (listingid) => {
+  sdk.ownListings.update({
+   id:listingid,
+   publicData:{
+     rating:5,
+     ratingAllPoints:5,
+   } 
+  }).then(res => {
+    console.log(res, '----ODMAH UPDATED-----');
+  });
+    }
 
 const odmahQueryListing = () => {
   sdk.listings.query({
@@ -138,5 +137,6 @@ const odmahQueryListing = () => {
   });
 
 }
-
+odmahShowListing('61b335a2-abcc-4886-a0bf-467f2b670306');
 odmahQueryListing();
+// odmahUpdateListing('61b335a2-abcc-4886-a0bf-467f2b670306');
